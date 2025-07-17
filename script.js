@@ -4,6 +4,9 @@ function createCard(data) {
 
   const img = document.createElement("img");
   img.src = data.image;
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "fill";
   div.appendChild(img);
 
   const title = document.createElement("h3");
@@ -25,37 +28,54 @@ function createCard(data) {
 
 function renderCarousel(container, data, currentIndex) {
   const length = data.length;
-  container.innerHTML = "";
+  const cards = container.querySelectorAll(".card");
 
-  // Calculate indices with wrap-around
   const leftIndex = (currentIndex - 1 + length) % length;
+  const centerIndex = currentIndex;
   const rightIndex = (currentIndex + 1) % length;
 
-  const leftCard = createCard(data[leftIndex]);
-  const centerCard = createCard(data[currentIndex]);
-  const rightCard = createCard(data[rightIndex]);
+  const positions = [leftIndex, centerIndex, rightIndex];
 
-  // Add classes
-  leftCard.classList.add("side", "left");
-  centerCard.classList.add("center");
-  rightCard.classList.add("side", "right");
+  if (cards.length === 0) {
+    for (let i = 0; i < 3; i++) {
+      const card = createCard(data[positions[i]]);
+      card.classList.add(i === 1 ? "center" : "side");
+      container.appendChild(card);
+    }
+  } else {
+    cards.forEach((card, i) => {
+      const itemData = data[positions[i]];
+      const img = card.querySelector("img");
+      const title = card.querySelector("h3");
+      const desc = card.querySelector("p");
 
-  // Apply inline styles for positioning and scale (will animate)
-leftCard.style.transform = "translateX(-5%) scale(0.9)";
-  leftCard.style.opacity = "0.6";
-  leftCard.style.zIndex = "1";
+      img.src = itemData.image;
+      title.textContent = itemData.name;
+      if (itemData.role) {
+        desc.textContent = itemData.role;
+      } else {
+        desc.textContent = itemData.desc || "";
+      }
 
-  centerCard.style.transform = "translateX(0) scale(1)";
-  centerCard.style.opacity = "1";
-  centerCard.style.zIndex = "3";
+      card.className = "card";
+      if (i === 1) card.classList.add("center");
+      else card.classList.add("side");
 
-rightCard.style.transform = "translateX(5%) scale(0.9)";
-  rightCard.style.opacity = "0.6";
-  rightCard.style.zIndex = "1";
-
-  container.appendChild(leftCard);
-  container.appendChild(centerCard);
-  container.appendChild(rightCard);
+      if (i === 0) {
+        card.style.transform = "translateX(-90%) scale(0.8)";
+        card.style.opacity = "0.6";
+        card.style.zIndex = "1";
+      } else if (i === 1) {
+        card.style.transform = "translateX(0) scale(1)";
+        card.style.opacity = "1";
+        card.style.zIndex = "3";
+      } else if (i === 2) {
+        card.style.transform = "translateX(90%) scale(0.8)";
+        card.style.opacity = "0.6";
+        card.style.zIndex = "1";
+      }
+    });
+  }
 }
 
 function setupCarouselNavigation(section, data) {
