@@ -1,6 +1,6 @@
-function createCard(data, className) {
+function createCard(data) {
   const div = document.createElement("div");
-  div.className = `card ${className}`;
+  div.className = "card";
 
   const img = document.createElement("img");
   img.src = data.image;
@@ -10,23 +10,48 @@ function createCard(data, className) {
   title.textContent = data.name;
   div.appendChild(title);
 
-  const desc = document.createElement("p");
-  desc.textContent = data.role || data.desc || "";
-  div.appendChild(desc);
+  if (data.role) {
+    const role = document.createElement("p");
+    role.textContent = data.role;
+    div.appendChild(role);
+  } else {
+    const desc = document.createElement("p");
+    desc.textContent = data.desc || "";
+    div.appendChild(desc);
+  }
 
   return div;
 }
 
 function renderCarousel(container, data, currentIndex) {
+  const length = data.length;
   container.innerHTML = "";
 
-  const length = data.length;
+  // Calculate indices with wrap-around
   const leftIndex = (currentIndex - 1 + length) % length;
   const rightIndex = (currentIndex + 1) % length;
 
-  const leftCard = createCard(data[leftIndex], "left");
-  const centerCard = createCard(data[currentIndex], "center");
-  const rightCard = createCard(data[rightIndex], "right");
+  const leftCard = createCard(data[leftIndex]);
+  const centerCard = createCard(data[currentIndex]);
+  const rightCard = createCard(data[rightIndex]);
+
+  // Add classes
+  leftCard.classList.add("side", "left");
+  centerCard.classList.add("center");
+  rightCard.classList.add("side", "right");
+
+  // Apply inline styles for positioning and scale (will animate)
+  leftCard.style.transform = "translateX(-120%) scale(0.7)";
+  leftCard.style.opacity = "0.6";
+  leftCard.style.zIndex = "1";
+
+  centerCard.style.transform = "translateX(0) scale(1)";
+  centerCard.style.opacity = "1";
+  centerCard.style.zIndex = "3";
+
+  rightCard.style.transform = "translateX(120%) scale(0.7)";
+  rightCard.style.opacity = "0.6";
+  rightCard.style.zIndex = "1";
 
   container.appendChild(leftCard);
   container.appendChild(centerCard);
