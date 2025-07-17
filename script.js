@@ -1,89 +1,74 @@
+
+const games = [
+  { name: 'Dumpster Dive', desc: 'Scavenge dumpsters for food and profit.', image: '' },
+  { name: 'Island Survival', desc: 'Craft, build and survive on a remote island.', image: '' },
+  { name: 'Tycoon Empire', desc: 'Grow your business from scratch.', image: '' },
+  { name: 'Zombie Rush', desc: 'Fight waves of zombies with your friends.', image: '' },
+  { name: 'Space Miner', desc: 'Mine asteroids and upgrade your gear.', image: '' },
+  { name: 'Tower Defense X', desc: 'Defend your base with powerful towers.', image: '' }
+];
+
+const groups = [
+  'KS Studios', 'BlockCore', 'DevUnit', 'ScriptSquad', 'ObbyBuilders',
+  'GameForge', 'RobloxXtreme', 'ScriptVerse', 'UIElite', 'StudioRift'
+].map(name => ({ name, desc: 'Game development group', image: '' }));
+
+const people = [
+  { name: 'DevRayn', role: 'UI/UX Designer', desc: '', image: '' },
+  { name: 'xBuilderz', role: 'Builder/Modeler', desc: '', image: '' },
+  { name: 'CodeKid', role: 'Scripter', desc: '', image: '' },
+  { name: 'MapQueen', role: 'Environment Artist', desc: '', image: '' },
+  { name: 'Animix', role: 'Animator', desc: '', image: '' }
+];
+
 function createCard(data) {
   const div = document.createElement("div");
   div.className = "card";
-
-  const img = document.createElement("img");
-  img.src = data.image;
-  div.appendChild(img);
-
   const title = document.createElement("h3");
   title.textContent = data.name;
   div.appendChild(title);
-
-  if (data.role) {
-    const role = document.createElement("p");
-    role.textContent = data.role;
-    div.appendChild(role);
-  }
-
   const desc = document.createElement("p");
-  desc.textContent = data.desc || "";
+  desc.textContent = data.desc || data.role || "";
   div.appendChild(desc);
-
   return div;
 }
 
 function loadCarousel(containerClass, data) {
   const container = document.querySelector(containerClass);
-  container.innerHTML = ""; // clear any existing cards
+  const wrapper = document.createElement("div");
+  wrapper.className = "carousel-wrapper";
+  container.appendChild(wrapper);
   data.forEach(item => {
     const card = createCard(item);
-    container.appendChild(card);
+    wrapper.appendChild(card);
   });
-}
 
-function setup3DCarousel(section) {
-  const carousel = section.querySelector(".carousel");
-  const cards = Array.from(carousel.children);
-  const prevBtn = section.querySelector(".carousel-nav.prev");
-  const nextBtn = section.querySelector(".carousel-nav.next");
-
-  if (cards.length < 3) {
-    // fallback: show all cards visible
-    cards.forEach(card => {
-      card.classList.remove("hidden", "left", "right", "center");
-      card.style.opacity = "1";
-    });
-    prevBtn.style.display = "none";
-    nextBtn.style.display = "none";
-    return;
+  if (wrapper.children.length > 1) {
+    wrapper.children[0].classList.add("center");
+    wrapper.children[wrapper.children.length - 1].classList.add("left");
+    wrapper.children[1].classList.add("right");
   }
 
-  let centerIndex = 0;
+  let index = 0;
+  const rotate = () => {
+    const cards = wrapper.children;
+    [...cards].forEach(c => c.className = "card");
+    const left = (index - 1 + cards.length) % cards.length;
+    const center = index;
+    const right = (index + 1) % cards.length;
+    cards[left].classList.add("left");
+    cards[center].classList.add("center");
+    cards[right].classList.add("right");
+  };
 
-  function updateCarousel() {
-    cards.forEach((card, i) => {
-      card.classList.add("hidden");
-      card.classList.remove("left", "right", "center");
-    });
-
-    const leftIndex = (centerIndex - 1 + cards.length) % cards.length;
-    const rightIndex = (centerIndex + 1) % cards.length;
-
-    cards[centerIndex].classList.add("center");
-    cards[leftIndex].classList.add("left");
-    cards[rightIndex].classList.add("right");
-  }
-
-  prevBtn.addEventListener("click", () => {
-    centerIndex = (centerIndex - 1 + cards.length) % cards.length;
-    updateCarousel();
-  });
-
-  nextBtn.addEventListener("click", () => {
-    centerIndex = (centerIndex + 1) % cards.length;
-    updateCarousel();
-  });
-
-  updateCarousel();
+  setInterval(() => {
+    index = (index + 1) % wrapper.children.length;
+    rotate();
+  }, 4000);
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  loadCarousel(".games-carousel", window.games);
-  loadCarousel(".groups-carousel", window.groups);
-  loadCarousel(".people-carousel", window.people);
-
-  document.querySelectorAll(".carousel-section").forEach(section => {
-    setup3DCarousel(section);
-  });
-});
+window.onload = () => {
+  loadCarousel("#games .carousel", games);
+  loadCarousel("#groups .carousel", groups);
+  loadCarousel("#people .carousel", people);
+};
