@@ -1,5 +1,5 @@
 window.games = [
-  { name: "Dumpstered [⭐]", image: "assets/images/dumpster.png", desc: "This was my most favorite game ideas Ive ever came up with and I belive me and my team executed it really well." },
+  { name: "Dumpstered [⭐]", image: "assets/images/dumpstered.png", desc: "This was my most favorite game ideas Ive ever came up with and I belive me and my team executed it really well." },
   { name: "Worker Tycoon", image: "assets/images/worker.png", desc: "Place NPCs and automate your income." },
   { name: "Island Builder", image: "assets/images/island.png", desc: "Design and expand your own tropical land." },
   { name: "Pet Adventure", image: "assets/images/pet.png", desc: "Collect and level pets in different zones." },
