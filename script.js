@@ -41,7 +41,7 @@ function renderCarousel(container, data, currentIndex) {
   rightCard.classList.add("side", "right");
 
   // Apply inline styles for positioning and scale (will animate)
-leftCard.style.transform = "translateX(-10%) scale(0.7)";
+leftCard.style.transform = "translateX(-5%) scale(0.9)";
   leftCard.style.opacity = "0.6";
   leftCard.style.zIndex = "1";
 
@@ -49,7 +49,7 @@ leftCard.style.transform = "translateX(-10%) scale(0.7)";
   centerCard.style.opacity = "1";
   centerCard.style.zIndex = "3";
 
-rightCard.style.transform = "translateX(10%) scale(0.7)";
+rightCard.style.transform = "translateX(5%) scale(0.9)";
   rightCard.style.opacity = "0.6";
   rightCard.style.zIndex = "1";
 
