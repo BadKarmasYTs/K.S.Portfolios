@@ -1,100 +1,201 @@
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Fredoka', sans-serif;
 }
 
 body {
-  background-color: #1e1e1e;
-  color: white;
-  padding: 20px;
-  text-align: center;
+  background: #1a1a1a;
+  color: #f0f0f0;
+  line-height: 1.6;
 }
 
 header {
-  margin-bottom: 40px;
-}
-
-h1 {
-  font-size: 3rem;
-  margin-bottom: 10px;
-}
-
-h2 {
-  margin: 30px 0 10px;
-}
-
-.carousel-section {
-  margin-bottom: 40px;
-}
-
-.carousel-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  perspective: 1200px;
-  overflow: hidden;
-  position: relative;
-  height: 300px;
+  background: #111;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #333;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.card {
-  background: #333;
-  border-radius: 10px;
-  padding: 20px;
-  width: 250px;
-  margin: 0 10px;
-  opacity: 0.3;
-  transform: scale(0.8) rotateY(0deg);
-  transition: all 0.5s ease;
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.card.center {
-  transform: scale(1) rotateY(0deg);
-  opacity: 1;
-  z-index: 3;
+nav a {
+  margin-left: 1.5rem;
+  text-decoration: none;
+  color: #bbb;
+  transition: 0.3s;
 }
 
-.card.left {
-  transform: scale(0.9) rotateY(30deg);
-  z-index: 2;
-}
-
-.card.right {
-  transform: scale(0.9) rotateY(-30deg);
-  z-index: 2;
-}
-
-.card h3 {
-  margin-bottom: 10px;
+nav a:hover {
   color: #fff;
 }
 
-.card p {
+.contact-btn {
+  background: #333;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #222;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.hero p {
+  font-size: 1.2rem;
   color: #aaa;
 }
-.card {
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  will-change: transform, opacity;
+
+section {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.carousel-section {
   position: relative;
+}
+
+.carousel {
+  display: flex;
+  overflow: hidden;
+  gap: 1rem;
+  scroll-snap-type: none;
+  user-select: none;
+  scroll-behavior: smooth;
+  position: relative;
+}
+
+.card {
+  background: #2a2a2a;
+  border-radius: 12px;
+  min-width: 250px;
+  max-width: 250px;
+  padding: 1rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .card.visible {
   opacity: 1;
+  transform: translateY(0);
 }
 
-.card.left, .card.center, .card.right {
-  opacity: 1 !important;
+.card img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
 }
 
-.card.center {
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
-  border: 2px solid #80c0ff;
+.card h3 {
+  font-size: 1.1rem;
+  margin: 0.5rem 0 0.2rem;
+  color: #fff;
 }
 
-.card.left, .card.right {
-  filter: brightness(0.8);
+.card p {
+  font-size: 0.9rem;
+  color: #aaa;
 }
 
+.reasons {
+  list-style: none;
+  text-align: left;
+  max-width: 600px;
+  margin: auto;
+  color: #ddd;
+}
+
+.reasons li {
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.contact-options {
+  font-size: 1.1rem;
+  color: #ddd;
+}
+
+.contact-options a {
+  color: #80c0ff;
+  text-decoration: none;
+}
+
+.contact-options a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+  background: #111;
+  margin-top: 4rem;
+  color: #666;
+}
+
+/* Carousel nav buttons */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: #444;
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  opacity: 0.75;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  z-index: 5;
+}
+
+.carousel-nav:hover {
+  opacity: 1;
+}
+
+.carousel-nav.prev {
+  left: 5px;
+}
+
+.carousel-nav.next {
+  right: 5px;
+}
