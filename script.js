@@ -25,82 +25,32 @@ function createCard(data) {
 
 function loadCarousel(containerClass, data) {
   const container = document.querySelector(containerClass);
-  container.innerHTML = ""; // Clear old cards
-
   data.forEach(item => {
     const card = createCard(item);
     container.appendChild(card);
   });
-
-  // After adding cards, update visibility and styles for the 3-card visible effect
-  updateVisibleCards(container);
-}
-
-function updateVisibleCards(container, centerIndex = 0) {
-  const cards = container.querySelectorAll(".card");
-  const total = cards.length;
-  if (total === 0) return;
-
-  cards.forEach(card => {
-    card.classList.remove("left", "center", "right", "visible");
-    card.style.opacity = "0";
-    card.style.transform = "translateX(0) scale(0.85) rotateY(0deg)";
-    card.style.zIndex = "0";
-  });
-
-  // Calculate indexes for left, center, right cards (looping)
-  const leftIndex = (centerIndex - 1 + total) % total;
-  const rightIndex = (centerIndex + 1) % total;
-
-  // Style center card
-  cards[centerIndex].classList.add("center", "visible");
-  cards[centerIndex].style.opacity = "1";
-  cards[centerIndex].style.transform = "translateX(0) scale(1.1) rotateY(0deg)";
-  cards[centerIndex].style.zIndex = "3";
-
-  // Style left card
-  cards[leftIndex].classList.add("left", "visible");
-  cards[leftIndex].style.opacity = "0.8";
-  cards[leftIndex].style.transform = "translateX(-150px) scale(0.85) rotateY(20deg)";
-  cards[leftIndex].style.zIndex = "2";
-
-  // Style right card
-  cards[rightIndex].classList.add("right", "visible");
-  cards[rightIndex].style.opacity = "0.8";
-  cards[rightIndex].style.transform = "translateX(150px) scale(0.85) rotateY(-20deg)";
-  cards[rightIndex].style.zIndex = "2";
 }
 
 function setupCarouselNavigation(section) {
-  const container = section.querySelector(".carousel");
+  const carousel = section.querySelector(".carousel");
   const prevBtn = section.querySelector(".carousel-nav.prev");
   const nextBtn = section.querySelector(".carousel-nav.next");
 
-  if (!container.querySelector(".card")) return;
+  if (!carousel.querySelector(".card")) return;
 
-  let currentIndex = 0;
-  const totalCards = container.querySelectorAll(".card").length;
-
-  updateVisibleCards(container, currentIndex);
+  const cardStyle = getComputedStyle(carousel.querySelector(".card"));
+  const cardWidth = carousel.querySelector(".card").offsetWidth + parseInt(cardStyle.marginRight || 16);
 
   prevBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex - 1 + totalCards) % totalCards;
-    updateVisibleCards(container, currentIndex);
+    carousel.scrollBy({ left: -cardWidth, behavior: "smooth" });
   });
 
   nextBtn.addEventListener("click", () => {
-    currentIndex = (currentIndex + 1) % totalCards;
-    updateVisibleCards(container, currentIndex);
+    carousel.scrollBy({ left: cardWidth, behavior: "smooth" });
   });
-
-  // Auto loop every 4 seconds
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % totalCards;
-    updateVisibleCards(container, currentIndex);
-  }, 4000);
 }
 
-// Animate cards fade-in on viewport entry (optional, keep original)
+// Animate cards when they enter viewport
 function setupCardAnimations(containerClass) {
   const container = document.querySelector(containerClass);
   const cards = container.querySelectorAll(".card");
