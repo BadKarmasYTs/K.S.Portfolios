@@ -72,6 +72,9 @@ section {
   margin: 3rem auto;
   padding: 0 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 h2 {
@@ -82,53 +85,90 @@ h2 {
 
 .carousel-section {
   position: relative;
+  width: 100%;
+  max-width: 850px;
 }
 
 .carousel {
   display: flex;
-  overflow: hidden;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
-  scroll-snap-type: none;
-  user-select: none;
-  scroll-behavior: smooth;
+  overflow: visible;
   position: relative;
+  width: 100%;
+  max-width: 850px;
 }
 
 .card {
   background: #2a2a2a;
   border-radius: 12px;
-  min-width: 250px;
-  max-width: 250px;
   padding: 1rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
   flex-shrink: 0;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 1 !important;
+  cursor: default;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease;
 }
 
-.card.visible {
-  opacity: 1;
-  transform: translateY(0);
+/* Center card styles */
+.card.center {
+  min-width: 280px;
+  max-width: 280px;
+  font-size: 1rem;
 }
 
-.card img {
+.card.center img {
   width: 100%;
-  height: 130px;
+  height: 140px;
   object-fit: cover;
   border-radius: 8px;
   margin-bottom: 0.5rem;
+  display: block;
 }
 
-.card h3 {
-  font-size: 1.1rem;
-  margin: 0.5rem 0 0.2rem;
+.card.center h3,
+.card.center p {
   color: #fff;
+  text-align: center;
+  margin: 0.2rem 0;
 }
 
-.card p {
-  font-size: 0.9rem;
-  color: #aaa;
+/* Side cards styles */
+.card.side {
+  min-width: 150px;
+  max-width: 150px;
+  opacity: 0.6;
+  filter: grayscale(40%);
+  cursor: pointer;
+  user-select: none;
+}
+
+.card.side img {
+  width: 100%;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.card.side h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #bbb;
+  text-align: center;
+  margin-top: 0;
+}
+
+.card.side p {
+  display: none;
 }
 
 .reasons {
@@ -186,6 +226,7 @@ footer {
   justify-content: center;
   font-size: 1.5rem;
   z-index: 5;
+  user-select: none;
 }
 
 .carousel-nav:hover {
@@ -199,73 +240,3 @@ footer {
 .carousel-nav.next {
   right: 5px;
 }
-
-.carousel {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  overflow: visible; /* show side cards partially */
-  position: relative;
-}
-
-.card {
-  background: #2a2a2a;
-  border-radius: 12px;
-  padding: 1rem;
-  box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  flex-shrink: 0;
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  transition: all 0.4s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: default;
-  user-select: none;
-}
-
-.card.center {
-  min-width: 280px;
-  max-width: 280px;
-  font-size: 1rem;
-}
-
-.card.center img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.card.center h3,
-.card.center p {
-  display: block;
-  color: #fff;
-  text-align: center;
-}
-
-.card.side {
-  min-width: 180px;
-  max-width: 180px;
-  opacity: 0.7;
-  filter: grayscale(40%);
-  user-select: none;
-}
-
-.card.side img,
-.card.side p {
-  display: none;
-}
-
-.card.side h3 {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #bbb;
-  text-align: center;
-  margin-top: 1rem;
-}
-
