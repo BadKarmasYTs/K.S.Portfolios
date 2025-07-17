@@ -1,5 +1,7 @@
 function createCard(data) {
   const div = document.createElement("div");
+  div.className = "card";
+
   const img = document.createElement("img");
   img.src = data.image;
   div.appendChild(img);
@@ -14,14 +16,16 @@ function createCard(data) {
     div.appendChild(role);
   }
 
+  const desc = document.createElement("p");
+  desc.textContent = data.desc || "";
+  div.appendChild(desc);
+
   return div;
 }
 
 function loadCarousel(containerClass, data) {
   const container = document.querySelector(containerClass);
-  data.forEach(item => {
-    container.appendChild(createCard(item));
-  });
+  data.forEach(item => container.appendChild(createCard(item)));
 }
 
 window.addEventListener("DOMContentLoaded", () => {
