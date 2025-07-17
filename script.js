@@ -1,45 +1,57 @@
-function createCard(data, type = "center") {
+function createCard(data) {
   const div = document.createElement("div");
-  div.className = "card " + type;
+  div.className = "card";
 
-  if (type === "center") {
-    const img = document.createElement("img");
-    img.src = data.image;
-    div.appendChild(img);
+  const img = document.createElement("img");
+  img.src = data.image;
+  div.appendChild(img);
 
-    const title = document.createElement("h3");
-    title.textContent = data.name;
-    div.appendChild(title);
+  const title = document.createElement("h3");
+  title.textContent = data.name;
+  div.appendChild(title);
 
-    if (data.role) {
-      const role = document.createElement("p");
-      role.textContent = data.role;
-      div.appendChild(role);
-    }
-
+  if (data.role) {
+    const role = document.createElement("p");
+    role.textContent = data.role;
+    div.appendChild(role);
+  } else {
     const desc = document.createElement("p");
     desc.textContent = data.desc || "";
     div.appendChild(desc);
-  } else {
-    const title = document.createElement("h3");
-    title.textContent = data.name;
-    div.appendChild(title);
   }
 
   return div;
 }
 
 function renderCarousel(container, data, currentIndex) {
-  container.innerHTML = "";
   const length = data.length;
+  container.innerHTML = "";
 
-  // Calculate indices for left, center, right with looping
+  // Calculate indices with wrap-around
   const leftIndex = (currentIndex - 1 + length) % length;
   const rightIndex = (currentIndex + 1) % length;
 
-  const leftCard = createCard(data[leftIndex], "side");
-  const centerCard = createCard(data[currentIndex], "center");
-  const rightCard = createCard(data[rightIndex], "side");
+  const leftCard = createCard(data[leftIndex]);
+  const centerCard = createCard(data[currentIndex]);
+  const rightCard = createCard(data[rightIndex]);
+
+  // Add classes
+  leftCard.classList.add("side", "left");
+  centerCard.classList.add("center");
+  rightCard.classList.add("side", "right");
+
+  // Apply inline styles for positioning and scale (will animate)
+  leftCard.style.transform = "translateX(-120%) scale(0.7)";
+  leftCard.style.opacity = "0.6";
+  leftCard.style.zIndex = "1";
+
+  centerCard.style.transform = "translateX(0) scale(1)";
+  centerCard.style.opacity = "1";
+  centerCard.style.zIndex = "3";
+
+  rightCard.style.transform = "translateX(120%) scale(0.7)";
+  rightCard.style.opacity = "0.6";
+  rightCard.style.zIndex = "1";
 
   container.appendChild(leftCard);
   container.appendChild(centerCard);
