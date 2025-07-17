@@ -25,44 +25,57 @@ function createCard(data) {
 
 function loadCarousel(containerClass, data) {
   const container = document.querySelector(containerClass);
+  container.innerHTML = ""; // clear any existing cards
   data.forEach(item => {
     const card = createCard(item);
     container.appendChild(card);
   });
 }
 
-function setupCarouselNavigation(section) {
+function setup3DCarousel(section) {
   const carousel = section.querySelector(".carousel");
+  const cards = Array.from(carousel.children);
   const prevBtn = section.querySelector(".carousel-nav.prev");
   const nextBtn = section.querySelector(".carousel-nav.next");
 
-  if (!carousel.querySelector(".card")) return;
+  if (cards.length < 3) {
+    // fallback: show all cards visible
+    cards.forEach(card => {
+      card.classList.remove("hidden", "left", "right", "center");
+      card.style.opacity = "1";
+    });
+    prevBtn.style.display = "none";
+    nextBtn.style.display = "none";
+    return;
+  }
 
-  const cardStyle = getComputedStyle(carousel.querySelector(".card"));
-  const cardWidth = carousel.querySelector(".card").offsetWidth + parseInt(cardStyle.marginRight || 16);
+  let centerIndex = 0;
+
+  function updateCarousel() {
+    cards.forEach((card, i) => {
+      card.classList.add("hidden");
+      card.classList.remove("left", "right", "center");
+    });
+
+    const leftIndex = (centerIndex - 1 + cards.length) % cards.length;
+    const rightIndex = (centerIndex + 1) % cards.length;
+
+    cards[centerIndex].classList.add("center");
+    cards[leftIndex].classList.add("left");
+    cards[rightIndex].classList.add("right");
+  }
 
   prevBtn.addEventListener("click", () => {
-    carousel.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    centerIndex = (centerIndex - 1 + cards.length) % cards.length;
+    updateCarousel();
   });
 
   nextBtn.addEventListener("click", () => {
-    carousel.scrollBy({ left: cardWidth, behavior: "smooth" });
+    centerIndex = (centerIndex + 1) % cards.length;
+    updateCarousel();
   });
-}
 
-// Animate cards when they enter viewport
-function setupCardAnimations(containerClass) {
-  const container = document.querySelector(containerClass);
-  const cards = container.querySelectorAll(".card");
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-      }
-    });
-  }, { threshold: 0.3 });
-
-  cards.forEach(card => observer.observe(card));
+  updateCarousel();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -71,10 +84,6 @@ window.addEventListener("DOMContentLoaded", () => {
   loadCarousel(".people-carousel", window.people);
 
   document.querySelectorAll(".carousel-section").forEach(section => {
-    setupCarouselNavigation(section);
+    setup3DCarousel(section);
   });
-
-  setupCardAnimations(".games-carousel");
-  setupCardAnimations(".groups-carousel");
-  setupCardAnimations(".people-carousel");
 });
