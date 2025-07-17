@@ -4,23 +4,16 @@ function createCard(data, className) {
 
   const img = document.createElement("img");
   img.src = data.image;
-  img.style.width = "100%";
-  img.style.height = "100%";
-  img.style.objectFit = "fill";
   div.appendChild(img);
-
-  const textContainer = document.createElement("div");
-  textContainer.className = "card-text";
 
   const title = document.createElement("h3");
   title.textContent = data.name;
-  textContainer.appendChild(title);
+  div.appendChild(title);
 
   const desc = document.createElement("p");
   desc.textContent = data.role || data.desc || "";
-  textContainer.appendChild(desc);
+  div.appendChild(desc);
 
-  div.appendChild(textContainer);
   return div;
 }
 
